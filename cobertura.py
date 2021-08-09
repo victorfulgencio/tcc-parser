@@ -9,10 +9,10 @@ if(len(sys.argv) < 2):
 
 
 CSV_FILE_PATH = sys.argv[1]
-DB_PS = 'cruzeiro'
+DB_PS = '*****'
 DB_HOST = 'localhost'
 DB_USER = 'root'
-DB_NAME = 'tcc'
+DB_NAME = '****'
 
 query_add_cobertura = ("INSERT IGNORE INTO tcc.cobertura "
                        "(ano, Operadora, Tecnologia, Setor_Censitario, Codigo_Municipio, Municipio, UF, Regiao, Domicilios, Moradores, Bairro, Tipo_Setor, Percentual_Cobertura) "
