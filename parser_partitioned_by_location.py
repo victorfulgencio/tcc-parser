@@ -13,30 +13,47 @@ def create_dir(directory):
         os.makedirs(directory)
 
 
-def write_new_file(file_path, row):
+def write_new_file(file_path, rows):
     already_exists = os.path.exists(file_path)
 
     with open(file_path, "a", newline='') as f:
-        w = csv.DictWriter(f, row.keys(), delimiter=";")
+        w = csv.DictWriter(f, rows[0].keys(), delimiter=";")
         if not already_exists:
             w.writeheader()
-        w.writerow(row)
+        w.writerows(rows)
 
 
-def store_on_new_dir(row):
+def store_on_new_dir(code, rows):
+    row = rows[0]
     directory = os.path.join(NEW_BASE_DIR, 'state=' + row['uf'] , 'city=' + row['municipio'])
-    file_path = os.path.join(directory, row['codigo_setor_censitario'] + '.csv')
-    print('Writing row to', directory, 'at:' ,datetime.datetime.now())
+    file_path = os.path.join(directory, code + '.csv')
+    print('Writing row to', directory, 'at:', datetime.datetime.now())
     create_dir(directory)
-    write_new_file(file_path, row)
+    write_new_file(file_path, rows)
 
 
-def read_file(file_name):
+def add(row, data):
+    code = row['codigo_setor_censitario']
+    if code not in data:
+        data[code] = [row]
+    else:
+        data[code].append(row)
+
+
+def get_csv_data(file_name):
+    data = dict()
     old_file_path = os.path.join(DIR, file_name)
     with open(old_file_path, newline='') as csvfile:
         spamreader = csv.DictReader(csvfile, delimiter=';')
         for row in spamreader:
-            store_on_new_dir(row)
+            add(row, data)
+    return pd.DataFrame.from_dict(data)
 
 
-read_file('Cobertura_TIM.csv')
+def read_file(file_name):
+    
+    for code, rows in data.items():
+        store_on_new_dir(code, rows)
+
+
+read_file('Cobertura_OI.csv')
