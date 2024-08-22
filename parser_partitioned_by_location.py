@@ -1,7 +1,6 @@
 import csv
 import datetime
 import os
-import pandas as pd
 
 
 DIR = "/mnt/c/Users/Victor/Documents/dev/tcc-ufsj/cobertura_movel"
@@ -47,13 +46,13 @@ def get_csv_data(file_name):
         spamreader = csv.DictReader(csvfile, delimiter=';')
         for row in spamreader:
             add(row, data)
-    return pd.DataFrame.from_dict(data)
+    return data
 
 
 def read_file(file_name):
-    
-    for code, rows in data.items():
+    dt = get_csv_data(file_name)
+    for code, rows in dt.items():
         store_on_new_dir(code, rows)
 
 
-read_file('Cobertura_OI.csv')
+read_file('Cobertura_SERCOMTEL.csv')
